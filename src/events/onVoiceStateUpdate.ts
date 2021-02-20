@@ -18,7 +18,10 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
     }
 
     const [theme] = await client.db.select('*').from('themes').where({ id: channel.theme })
-    client.lavalink.play(voiceChannel, theme.url)
+
+    if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
+      client.lavalink.play(voiceChannel, theme.url)
+    }
   }
 
   for (const rawChannel of client.channels.cache.filter((c) => c instanceof VoiceChannel && c.members.has(client.user?.id!)).array()) {
@@ -32,6 +35,8 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
 
     const { theme = 0 } = ((await client.db.select('theme').where({ guild: voiceChannel.guild.id }).from('channels'))[0] || {})
     const [themeData] = await client.db.select('*').from('themes').where({ id: theme })
-    client.lavalink.play(voiceChannel, themeData.url)
+    if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
+      client.lavalink.play(voiceChannel, themeData.url)
+    }
   }
 }
