@@ -7,9 +7,7 @@ export default class Lavalink extends Manager {
 
   async play (channel: VoiceChannel, url: string) {
     const player = await this.join({ guild: channel.guild.id, channel: channel.id, node: 'main' })
-    if (!this.players.get(channel.guild.id)?.playing) {
-      await player.play(await this.getTrack(url)).catch(process.exit)
-    }
+    await player.play(await this.getTrack(url)).catch(process.exit)
   }
 
   async getTrack (url: string) {
