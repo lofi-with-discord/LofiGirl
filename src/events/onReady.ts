@@ -21,15 +21,12 @@ export default async function (client: Client) {
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
 
     if (membersIn < 1) {
-      await client.lavalink.leave(voiceChannel.guild.id)
+      await client.lavalink.leaveS(voiceChannel)
       continue
     }
 
     const [theme] = await client.db.select('*').from('themes').where({ id: channel.theme })
-
-    if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
-      client.lavalink.play(voiceChannel, theme.url)
-    }
+    client.lavalink.play(voiceChannel, theme.url)
   }
 
   for (const rawChannel of client.channels.cache.filter((c) => c instanceof VoiceChannel && c.members.has(client.user?.id!)).array()) {
@@ -37,7 +34,7 @@ export default async function (client: Client) {
 
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
     if (membersIn < 1) {
-      await client.lavalink.leave(voiceChannel.guild.id)
+      await client.lavalink.leaveS(voiceChannel)
       continue
     }
 

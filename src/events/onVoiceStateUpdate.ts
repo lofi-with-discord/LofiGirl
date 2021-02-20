@@ -13,15 +13,12 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
 
     if (membersIn < 1) {
-      await client.lavalink.leave(voiceChannel.guild.id)
+      await client.lavalink.leaveS(voiceChannel)
       continue
     }
 
     const [theme] = await client.db.select('*').from('themes').where({ id: channel.theme })
-
-    if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
-      client.lavalink.play(voiceChannel, theme.url)
-    }
+    client.lavalink.play(voiceChannel, theme.url)
   }
 
   for (const rawChannel of client.channels.cache.filter((c) => c instanceof VoiceChannel && c.members.has(client.user?.id!)).array()) {
@@ -29,14 +26,12 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
 
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
     if (membersIn < 1) {
-      await client.lavalink.leave(voiceChannel.guild.id)
+      await client.lavalink.leaveS(voiceChannel)
       continue
     }
 
     const { theme = 0 } = ((await client.db.select('theme').where({ guild: voiceChannel.guild.id }).from('channels'))[0] || {})
     const [themeData] = await client.db.select('*').from('themes').where({ id: theme })
-    if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
-      client.lavalink.play(voiceChannel, themeData.url)
-    }
+    client.lavalink.play(voiceChannel, themeData.url)
   }
 }
