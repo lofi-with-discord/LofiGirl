@@ -1,7 +1,9 @@
-import { VoiceChannel } from 'discord.js'
+import { VoiceChannel, VoiceState } from 'discord.js'
 import Client from '../classes/Client'
 
-export default async function onVoiceStateUpdate (client: Client) {
+export default async function onVoiceStateUpdate (client: Client, oldState: VoiceState, newState: VoiceState) {
+  if (oldState.member?.user.bot || newState.member?.user.bot) return
+
   const channels = await client.db.select('*').from('channels')
   for (const channel of channels) {
     const rawChannel = client.channels.resolve(channel.id)
