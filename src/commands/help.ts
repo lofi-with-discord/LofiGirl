@@ -33,7 +33,7 @@ export default async function (client: Client, msg: Message, query: Query) {
 
     const embed2 = new DefaultEmbed(query.cmd, msg.guild?.me?.roles.color)
       .addFields(fields)
-      .setImage('https://cdn.discordapp.com/attachments/530043751901429762/769515579274035240/Peek_2020-10-24_20-00.gif')
+      .setImage('https://cdn.discordapp.com/attachments/530043751901429762/812601825568096287/Peek_2021-02-20_17-29.gif')
 
     m.edit('', embed2)
     return

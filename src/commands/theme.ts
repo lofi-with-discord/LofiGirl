@@ -16,7 +16,7 @@ export default async function (client: Client, msg: Message, query: Query) {
   if (perm) {
     const embed = new DefaultEmbed(query.cmd, msg.guild?.me?.roles.color, {
       title: `:cd: ${themes.length}개의 테마를 찾았어요`,
-      description: '[추가요청](https://github.com/lofi-with-discord/LofiGirl/discussions/1)'
+      description: '[추가요청](https://discord.gg/WJRtvankkB)'
     })
 
     const m = await msg.channel.send(':floppy_disk: 테마 목록을 불러오는중...')

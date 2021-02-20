@@ -11,7 +11,7 @@ const ACTIVITIES: Activity[] = [
   { name: '{{many}}명과 함깨 Lo-fi를', type: 'LISTENING' },
   { name: '{{guilds}}개의 서버와 함깨', type: 'LISTENING' },
   { name: '{{prefix}}theme로 테마를 바꿔보세요!', type: 'PLAYING' },
-  { name: '테마 추가 신청은 깃허브에서 (https://github.com/lofi-with-discord/LofiGirl/discussions/1)', type: 'PLAYING' },
+  { name: '테마 추가 신청은 지원 서버에서(https://discord.gg/WJRtvankkB)', type: 'PLAYING' },
   { name: 'koreanbots에 한번이라도 로그인 하신분은 하트를 눌러야 작동해요', type: 'PLAYING' }
 ]
 
