@@ -117,3 +117,5 @@ dist
 
 # configuration file
 config.json
+
+/lavalink/*.jar

@@ -1,14 +1,20 @@
-import path from 'path'
+import { Client, TextChannel } from 'discord.js'
 import { existsSync, readFileSync } from 'fs'
-import { Client } from 'discord.js'
-import { readRecursively } from '../utils'
+import Knex from 'knex'
+import path from 'path'
 import { Command, Config } from '../types'
+import { readRecursively } from '../utils'
+import Lavalink from './Lavalink'
 
 const PATH = path.resolve()
 
 export default class extends Client {
+  public db: Knex
   public config: Config
+  public lavalink: Lavalink
   public commands: Command[] = []
+
+  private logChannel?: TextChannel
 
   constructor () {
     super()
@@ -42,8 +48,30 @@ export default class extends Client {
         this.commands.push(require(file) as Command)
       }
     }
+
+    this.db = Knex({
+      client: 'mysql',
+      connection: {
+        host: 'localhost',
+        port: 3306,
+        user: 'lofigirl',
+        database: 'lofigirl'
+      }
+    })
+
+    this.lavalink = new Lavalink(this, [{
+      id: 'main',
+      host: 'localhost',
+      port: 2334,
+      password: 'youshallnotpass'
+    }])
+
+    this.on('ready', async () => {
+      this.logChannel = await this.channels.resolve(this.config.servelog) as TextChannel
+    })
   }
 
+  public log = (content: string) => this.logChannel?.send(`${new Date()}\n${content}`)
   public start = (token?: string) => this.login(token || this.config.token)
   public regist = (event = 'ready', exec: any) =>
     this.on(event, (...args) => exec(this, ...args))
