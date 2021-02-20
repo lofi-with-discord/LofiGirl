@@ -13,7 +13,7 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
 
     if (membersIn < 1) {
-      await client.lavalink.leaveS(voiceChannel)
+      await client.lavalink.leave(voiceChannel.guild.id)
       continue
     }
 
@@ -26,7 +26,7 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
 
     const membersIn = voiceChannel.members.filter((m) => !m.user.bot).size
     if (membersIn < 1) {
-      await client.lavalink.leaveS(voiceChannel)
+      await client.lavalink.leave(voiceChannel.guild.id)
       continue
     }
 

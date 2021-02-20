@@ -12,14 +12,6 @@ export default class Lavalink extends Manager {
     }
   }
 
-  async leaveS (channel: VoiceChannel, force = false) {
-    if (force) return super.leave(channel.guild.id)
-
-    if (channel.members.filter((m) => !m.user.bot).size < 1 && this.players.get(channel.guild.id)?.playing) {
-      await super.leave(channel.guild.id)
-    }
-  }
-
   async getTrack (url: string) {
     if (!this.trackCache[url]) {
       const params = new URLSearchParams()
