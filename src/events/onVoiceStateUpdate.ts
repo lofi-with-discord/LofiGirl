@@ -20,7 +20,9 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
     }
 
     if (!client.lavalink.players.has(voiceChannel.guild.id)) {
-      const [themeData] = await client.db.select('*').from('themes').where({ id: channel.theme })
+      const { themeId = 1 } = ((await client.db.select('theme').where({ guild: voiceChannel.guild.id }).from('channels'))[0] || {})
+      const [themeData] = await client.db.select('*').from('themes').where({ id: themeId || 1 })
+
       client.lavalink.play(voiceChannel, themeData.url)
     }
   }
