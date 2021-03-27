@@ -1,4 +1,4 @@
-import { Client, TextChannel } from 'discord.js'
+import { Client, MessageEmbed, TextChannel, WebhookClient } from 'discord.js'
 import { existsSync, readFileSync } from 'fs'
 import Knex from 'knex'
 import path from 'path'
@@ -61,12 +61,15 @@ export default class extends Client {
       }
     })
 
+    const hook = new WebhookClient(this.config.webhook.id, this.config.webhook.token)
+    const logger = (msg: MessageEmbed) => hook.send(msg)
+
     this.lavalink = new Lavalink(this, [{
       id: 'main',
       host: 'localhost',
       port: 2334,
       password: 'youshallnotpass'
-    }])
+    }], logger)
 
     this.on('ready', async () => {
       this.logChannel = await this.channels.resolve(this.config.servelog) as TextChannel
