@@ -9,7 +9,7 @@ export default async function onVoiceStateUpdate (client: Client, old: VoiceStat
       if (!old.channel) return
 
       if (old.channel.members.filter((member) => !member.user.bot).size < 1) {
-        client.lavalink.leave(old.guild.id)
+        client.lavalink.stop(old.guild)
         continue
       }
     }
@@ -25,6 +25,6 @@ export default async function onVoiceStateUpdate (client: Client, old: VoiceStat
 
   if (!old?.channel?.members) return
   if (old.channel.members.filter((member) => !member.user.bot).size < 1) {
-    client.lavalink.leave(old.guild.id)
+    client.lavalink.stop(old.guild)
   }
 }

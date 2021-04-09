@@ -1,9 +1,8 @@
 import { LavalinkNodeOptions, Manager } from '@lavacord/discord.js'
-import { Message, MessageEmbed, VoiceChannel } from 'discord.js'
+import { Guild, VoiceChannel } from 'discord.js'
 import { get } from 'superagent'
 import Client from './Client'
-
-type Logger = (msg: MessageEmbed) => Promise<Message>
+import Logger from './Logger'
 
 export default class Lavalink extends Manager {
   private logger: Logger
@@ -17,10 +16,16 @@ export default class Lavalink extends Manager {
   async play (channel: VoiceChannel, url: string) {
     const player = await this.join({ guild: channel.guild.id, channel: channel.id, node: 'main' })
 
-    player.on('error', (err) => this.logger(new MessageEmbed({ color: 0xff0000, title: err.type, description: err.error, footer: { text: err.reason } })))
-    player.on('warn', (warn) => this.logger(new MessageEmbed({ color: 0xffff00, description: warn })))
+    player.on('error', (err) => this.logger.logError(err.type, err.error))
+    player.on('warn', (warn) => this.logger.logWarn(warn))
 
+    this.logger.logInfo(false, channel.guild)
     await player.play(await this.getTrack(url)).catch(process.exit)
+  }
+
+  async stop (guild: Guild) {
+    this.logger.logInfo(true, guild)
+    super.leave(guild.id)
   }
 
   async getTrack (url: string) {

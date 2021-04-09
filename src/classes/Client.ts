@@ -1,10 +1,11 @@
-import { Client, MessageEmbed, TextChannel, WebhookClient } from 'discord.js'
+import { Client } from 'discord.js'
 import { existsSync, readFileSync } from 'fs'
 import Knex from 'knex'
 import path from 'path'
 import { Command, Config } from '../types'
 import { readRecursively } from '../utils'
 import Lavalink from './Lavalink'
+import Logger from './Logger'
 
 const PATH = path.resolve()
 
@@ -13,8 +14,6 @@ export default class extends Client {
   public config: Config
   public lavalink: Lavalink
   public commands: Command[] = []
-
-  private logChannel?: TextChannel
 
   constructor () {
     super()
@@ -62,8 +61,7 @@ export default class extends Client {
       }
     })
 
-    const hook = new WebhookClient(this.config.webhook.id, this.config.webhook.token)
-    const logger = (msg: MessageEmbed) => hook.send(msg)
+    const logger = new Logger(this.config.webhook)
 
     this.lavalink = new Lavalink(this, [{
       id: 'main',
@@ -71,13 +69,8 @@ export default class extends Client {
       port: 2334,
       password: 'youshallnotpass'
     }], logger)
-
-    this.on('ready', async () => {
-      this.logChannel = await this.channels.resolve(this.config.servelog) as TextChannel
-    })
   }
 
-  public log = (content: string) => this.logChannel?.send(`${new Date()}\n${content}`)
   public start = (token?: string) => this.login(token || this.config.token)
   public regist = (event = 'ready', exec: any) =>
     this.on(event, (...args) => exec(this, ...args))
