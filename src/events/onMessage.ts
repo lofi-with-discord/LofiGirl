@@ -1,6 +1,7 @@
 import { GuildChannel, Message } from 'discord.js'
 import { get } from 'superagent'
 import Client from '../classes/Client'
+import { DefaultEmbed, hasPermissions } from '../utils'
 import Query from './../classes/Query'
 
 const cache: string[] = []
@@ -51,7 +52,21 @@ export default async function onMessage (client: Client, msg: Message) {
         cache.push(msg.author.id)
         target.default(client, msg, query)
       } else {
-        msg.channel.send('헤잉.. 죄송하지만 하트 버튼 하나만 딱 눌러주시면 안될까요...\n(하트를 누르면 명령어 기능을 사용하실 수 있습니다)\n' + client.config.koreanbots.profileURL)
+        if (hasPermissions(client.user.id, channel, ['EMBED_LINKS'])) {
+          const embed = new DefaultEmbed('welcome', null, {
+            title: 'Lofi Girl이 멈추지 않도록 :heart:를 눌러 주세요',
+            description: '클릭 한번으로 1인 개발자에게 큰 희망을 줄 수 있어요\n' +
+              '(Koreanbots에 한번이라도 로그인 한 적이 있는 경우 :heart:를 눌러야지만 명령어 기능을 사용할 수 있습니다)\n\n' +
+              ':heart: 주러 가기](' + client.config.koreanbots.profileURL + ' "여기를 눌러 Koreanbots로 이동합니다") •' +
+              '[:star: 주러 가기](https://github.com/lofi-with-discord/LofiGirl "여기를 눌러 Github로 이동합니다")'
+          })
+          msg.channel.send(embed)
+        } else {
+          msg.channel.send(
+            '헤잉.. 죄송하지만 하트 버튼 하나만 딱 눌러주시면 안될까요...\n' +
+            '(하트를 누르면 명령어 기능을 사용하실 수 있습니다)\n' +
+            client.config.koreanbots.profileURL)
+        }
       }
     } else target.default(client, msg, query)
   } else target.default(client, msg, query)

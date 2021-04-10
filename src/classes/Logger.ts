@@ -33,7 +33,7 @@ export default class Logger extends WebhookClient {
       color: isLeave ? 0x0000ff : 0x00ffff,
       title: isLeave ? 'Leaving' : 'Playing',
       description: `${gid.name} (${gid.id})`
-    })
+    }).setTimestamp()
 
     this.send(embed)
   }

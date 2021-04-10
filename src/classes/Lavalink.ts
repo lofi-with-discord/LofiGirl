@@ -24,7 +24,7 @@ export default class Lavalink extends Manager {
   }
 
   async stop (guild: Guild) {
-    // this.logger.logInfo(true, guild)
+    if (guild.voice) this.logger.logInfo(true, guild)
     super.leave(guild.id)
   }
 
