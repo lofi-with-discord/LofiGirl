@@ -57,7 +57,7 @@ export default async function onMessage (client: Client, msg: Message) {
             title: 'Lofi Girl이 멈추지 않도록 :heart:를 눌러 주세요',
             description: '클릭 한번으로 1인 개발자에게 큰 희망을 줄 수 있어요\n' +
               '(Koreanbots에 한번이라도 로그인 한 적이 있는 경우 :heart:를 눌러야지만 명령어 기능을 사용할 수 있습니다)\n\n' +
-              ':heart: 주러 가기](' + client.config.koreanbots.profileURL + ' "여기를 눌러 Koreanbots로 이동합니다") •' +
+              '[:heart: 주러 가기](' + client.config.koreanbots.profileURL + ' "여기를 눌러 Koreanbots로 이동합니다") •' +
               '[:star: 주러 가기](https://github.com/lofi-with-discord/LofiGirl "여기를 눌러 Github로 이동합니다")'
           })
           msg.channel.send(embed)
