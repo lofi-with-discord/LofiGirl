@@ -38,7 +38,7 @@ export default async function (client: Client) {
       continue
     }
 
-    const { theme = 0 } = ((await client.db.select('theme').where({ guild: voiceChannel.guild }).from('channels'))[0] || {})
+    const { theme = 0 } = ((await client.db.select('theme').where({ guild: voiceChannel.guild.id }).from('channels'))[0] || {})
     const [themeData] = await client.db.select('*').from('themes').where({ id: theme })
 
     if (!client.lavalink.players.get(voiceChannel.guild.id)?.playing) {
