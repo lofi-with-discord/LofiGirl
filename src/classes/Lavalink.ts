@@ -14,6 +14,7 @@ export default class Lavalink extends Manager {
   }
 
   async play (channel: VoiceChannel, url: string) {
+    if (!channel) return
     const player = await this.join({ guild: channel.guild.id, channel: channel.id, node: 'main' })
 
     player.on('error', (err) => this.logger.logError(err.type, err.error))
