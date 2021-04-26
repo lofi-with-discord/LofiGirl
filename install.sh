@@ -6,5 +6,5 @@ then
   echo installed lavalink v$version
 else
   echo installing lavalink v$version
-  wget https://github.com/Frederikam/Lavalink/releases/download/$version/Lavalink.jar -O $(pwd)/lavalink/lavalink.jar
+  wget https://github.com/freyacodes/Lavalink/releases/download/$version/Lavalink.jar -O $(pwd)/lavalink/lavalink.jar
 fi
