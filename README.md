@@ -26,7 +26,7 @@
 ### Windows
 1. run `npm i` or `yarn` to get dependancies
 1. if your jdk version is not `v13`, get it from [here](https://jdk.java.net/archive/)
-2. get lavalink jar file from [here](https://github.com/Frederikam/Lavalink/releases/download/3.3.2.3/Lavalink.jar)
+2. get lavalink jar file from [here](https://github.com/freyacodes/Lavalink/releases/download/3.3.2.5/Lavalink.jar)
 3. place `C:\path\to\download\folder\Lavalink.jar` to `C:\path\to\this\code\folder\lavalink/lavalink.jar`
 4. run `java -jar lavalink/lavalink.jar` to start lavalink server
 5. open mysql shell and run `source database.sql`
