@@ -5,12 +5,8 @@
   "repository": "https://github.com/TotalTemplates/discord.js-classbased.git",
   "license": "MIT",
   "scripts": {
-    "start": "yarn tsc && yarn build && node ./dist/index.js",
-    "dev": "nodemon -e ts --exec 'yarn start || exit 1'",
-    "eslint": ".\\node_modules\\.bin\\eslint **/*.ts --fix",
-    "watch": "babel --watch src --out-dir dist --extensions '.ts,.tsx'",
-    "build": "babel src --out-dir dist --extensions '.ts,.tsx'",
-    "tsc": "tsc"
+    "start": "tsc && node ./dist/index.js",
+    "dev": "nodemon -e ts --exec 'yarn start || exit 1'"
   },
   "dependencies": {
     "@lavacord/discord.js": "^0.0.7",
