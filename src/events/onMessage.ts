@@ -25,7 +25,7 @@ export default async function onMessage (client: Client, msg: Message) {
   const channel = msg.channel as GuildChannel
   if (!channel.permissionsFor(client.user.id)?.has('SEND_MESSAGES')) return
 
-  if (msg.mentions.has(client.user)) {
+  if (msg.mentions.has(client.user, { ignoreEveryone: true, ignoreRoles: true })) {
     const m = await msg.channel.send('누구야! 누가 맨션해써!')
     setTimeout(() => {
       m.edit(`:call_me: 부르셨나요? 아, 도움이 필요하신가요?\n\`${prefix}help\`로 도움말을 확인해 보세요!`)
