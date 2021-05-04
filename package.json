@@ -1,12 +1,13 @@
 {
-  "name": "discord.js-classbased",
+  "name": "lofigirl",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/TotalTemplates/discord.js-classbased.git",
+  "repository": "https://github.com/lofi-with-discord/LofiGirl.git",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
-    "dev": "nodemon -e ts --exec 'yarn start || exit 1'"
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "dev": "nodemon -e ts --exec 'yarn build && yarn start || exit 1'"
   },
   "dependencies": {
     "@lavacord/discord.js": "^0.0.7",
