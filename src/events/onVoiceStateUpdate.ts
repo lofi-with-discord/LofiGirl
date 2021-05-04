@@ -5,6 +5,8 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
   if (oldState.member?.id === client.user?.id) return
   if (newState.member?.id === client.user?.id) return
 
+  if (!oldState.channel && !newState.channel) return
+
   // 나갔을때
   if (!newState.channelID) {
     console.log('Leaving: ' + oldState.channelID)
