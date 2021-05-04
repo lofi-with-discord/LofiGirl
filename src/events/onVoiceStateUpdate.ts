@@ -30,8 +30,6 @@ export default async function onVoiceStateUpdate (client: Client, oldState: Voic
     if (isHere) return
     if (!isMarked) return
 
-    console.log(1)
-
     const { theme = 1 } = ((await client.db.select('theme').where({ guild: newState.guild.id }).from('channels'))[0] || {})
     const [themeData] = await client.db.select('*').from('themes').where({ id: theme })
     client.lavalink.play(newState.channel!, themeData.url)

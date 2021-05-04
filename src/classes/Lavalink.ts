@@ -15,6 +15,7 @@ export default class Lavalink extends Manager {
 
   async play (channel: VoiceChannel, url: string) {
     if (!channel) return
+    await this.leave(channel.guild.id)
     const player = await this.join({ guild: channel.guild.id, channel: channel.id, node: 'main' })
 
     player.on('error', (err) => this.logger.logError(err.type, err.error))
@@ -26,7 +27,7 @@ export default class Lavalink extends Manager {
 
   async stop (guild: Guild) {
     if (guild.voice) this.logger.logInfo(true, guild)
-    super.leave(guild.id)
+    await this.leave(guild.id)
   }
 
   async getTrack (url: string) {
