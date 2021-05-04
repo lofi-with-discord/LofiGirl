@@ -2,11 +2,13 @@ import { VoiceChannel } from 'discord.js'
 import { post } from 'superagent'
 import Client from '../classes/Client'
 import runActivityCycle from '../utils/activities'
+import { registPm2 } from '../utils/pm2'
 
 export default async function (client: Client) {
   if (client.user) console.log(client.user.username + ' is now online!')
   if (client.config) console.log('ㄴPrefix: ' + client.config.prefix)
 
+  registPm2(client)
   runActivityCycle(client)
 
   await client.lavalink.connect().catch(process.exit)
