@@ -4,8 +4,9 @@ import Client from '../classes/Client'
 export default async function onVoiceStateUpdate (client: Client, old: VoiceState, state: VoiceState) {
   const channels = await client.db.select('*').from('channels')
 
-  console.log(old.channel?.members.filter((member) => !member.user.bot).map((m) => m.user.id))
-  console.log(state.channel?.members.filter((member) => !member.user.bot).map((m) => m.user.id))
+  if (!state.channelID) console.log('나감')
+  else if (!old.channelID) console.log('들어옴')
+  else if (old.channelID !== state.channelID) console.log('이동함')
 
   for (const channel of channels) {
     if (old.channelID === channel.id && state.channelID !== channel.id) {
