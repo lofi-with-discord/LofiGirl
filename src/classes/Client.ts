@@ -32,12 +32,14 @@ export default class extends Client {
         token: config.token || process.env.TOKEN || '',
         prefix: config.prefix || process.env.PREFIX || '!',
         koreanbots: config.koreanbots || { enable: false },
+        dev: Boolean(config.dev || process.env.DEV || false),
         webhook: config.webhook || {}
       }
     } else {
       this.config = {
         token: process.env.TOKEN || '',
         prefix: process.env.PREFIX || '!',
+        dev: Boolean(process.env.DEV) || false,
         koreanbots: { enable: false }
       }
     }

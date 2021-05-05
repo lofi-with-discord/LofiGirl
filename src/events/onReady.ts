@@ -54,4 +54,6 @@ export default async function (client: Client) {
         .catch(console.log)
     }, 300000)
   }
+
+  require('../slashs/index').default(client)
 }

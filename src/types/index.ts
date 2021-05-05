@@ -5,6 +5,7 @@ import Query from '../classes/Query'
 export interface Config {
   prefix: string
   token: string
+  dev: boolean
   [key: string]: any
 }
 
