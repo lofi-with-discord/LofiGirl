@@ -1,9 +1,10 @@
 import { GuildChannel, Message } from 'discord.js'
 import Client from '../classes/Client'
 import Query from '../classes/Query'
+import { Locale } from '../types'
 import { DefaultEmbed, hasPermissions } from '../utils'
 
-export default async function (client: Client, msg: Message, query: Query) {
+export default async function (client: Client, msg: Message, query: Query, locale: Locale) {
   const channel = msg.channel as GuildChannel
 
   const perm = hasPermissions(client.user?.id!, channel, ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'])
@@ -14,7 +15,7 @@ export default async function (client: Client, msg: Message, query: Query) {
     }).setImage('https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg')
       .setFooter('* illustration by Juan Pablo Machado (http://jpmachado.art)')
 
-    const m = await msg.channel.send(':triangular_flag_on_post:를 눌러 다음으로 넘어갈 수 있어요', embed)
+    const m = await msg.channel.send(locale('help_continue'), embed)
 
     m.react('🚩')
 
@@ -23,12 +24,12 @@ export default async function (client: Client, msg: Message, query: Query) {
 
     const fields = []
     for (const command of client.commands) {
-      const { aliases, descript: value = 'none' } = command
+      const { aliases } = command
 
       if (!aliases) continue
 
       const name = aliases.reduce((acc, alias) => `${acc}\`${client.config.prefix}${alias}\` `, '')
-      fields.push({ name, value })
+      fields.push({ name, value: locale(`${aliases[0]}_help`) })
     }
 
     const embed2 = new DefaultEmbed(query.cmd, msg.guild?.me?.roles.color)
@@ -41,16 +42,15 @@ export default async function (client: Client, msg: Message, query: Query) {
 
   let str = ''
   for (const command of client.commands) {
-    const { aliases, descript: value = 'none' } = command
+    const { aliases } = command
 
     if (!aliases) continue
 
     const name = aliases.reduce((acc, alias) => `${acc}\`${client.config.prefix}${alias}\` `, '')
-    str += `${name}\n${value}\n\n`
+    str += `${name}\n${locale(`${aliases[0]}_help`)}\n\n`
   }
 
   msg.channel.send(str)
 }
 
 export const aliases = ['help', '도움', '도움말', '명령어']
-export const descript = '지금보는 이 도움말을 보여줘요'

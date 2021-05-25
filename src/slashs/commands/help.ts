@@ -5,12 +5,12 @@ export default async function (client: Client) {
   const fields = []
   for (const command of client.commands) {
     console.log(fields)
-    const { aliases, descript: value = 'none' } = command
+    const { aliases } = command
 
     if (!aliases) continue
 
     const name = aliases.reduce((acc, alias) => `${acc}\`${client.config.prefix}${alias}\` `, '')
-    fields.push({ name, value })
+    fields.push({ name, value: client.locale.__(`${aliases[0]}_help`) })
   }
 
   return {

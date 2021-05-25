@@ -1,5 +1,6 @@
 import { Client } from 'discord.js'
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readdirSync, readFileSync } from 'fs'
+import { I18n } from 'i18n'
 import Knex from 'knex'
 import path from 'path'
 import { Command, Config } from '../types'
@@ -11,6 +12,7 @@ const PATH = path.resolve()
 
 export default class extends Client {
   public db: Knex
+  public locale: I18n
   public config: Config
   public lavalink: Lavalink
   public commands: Command[] = []
@@ -61,6 +63,12 @@ export default class extends Client {
         user: 'lofigirl',
         database: 'lofigirl'
       }
+    })
+
+    this.locale = new I18n()
+    this.locale.configure({
+      locales: readdirSync(PATH + '/i18n/').filter((v) => v.endsWith('.json')).map((v) => v.replace('.json', '')),
+      directory: PATH + '/i18n'
     })
 
     const logger = new Logger(this.config.webhook)

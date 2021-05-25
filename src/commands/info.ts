@@ -42,4 +42,3 @@ export default async function (client: Client, msg: Message, query: Query) {
 }
 
 export const aliases = ['info', '상태', '정보']
-export const descript = '현재 LofiGirl봇의 상태를 보여줘요'

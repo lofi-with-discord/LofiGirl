@@ -1,13 +1,14 @@
 import { VoiceChannel } from 'discord.js'
 import { post } from 'superagent'
 import Client from '../classes/Client'
-import runActivityCycle from '../utils/activities'
 
 export default async function (client: Client) {
   if (client.user) console.log(client.user.username + ' is now online!')
   if (client.config) console.log('ㄴPrefix: ' + client.config.prefix)
 
-  runActivityCycle(client)
+  setInterval(() => {
+    client.user?.setActivity(`${client.config.prefix}help | with ${client.channels.cache.filter((c) => c instanceof VoiceChannel && c.members.has(client.user?.id!)).reduce((prev, curr) => prev + (curr as VoiceChannel).members.filter((m) => !m.user.bot).size, 0)} users`)
+  }, 5000)
 
   await client.lavalink.connect().catch(process.exit)
   console.log('Lavalink Connected')

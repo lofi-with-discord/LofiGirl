@@ -9,10 +9,11 @@ export interface Config {
   [key: string]: any
 }
 
+export type Locale = (phrase: string, ...args: any[]) => string
+
 export interface Command {
-  default: (client: Client, msg: Message, query: Query) => any
+  default: (client: Client, msg: Message, query: Query, locale: Locale) => any
   aliases: string[]
-  descript: string
 }
 
 export interface User {

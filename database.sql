@@ -16,5 +16,10 @@ create table themes (
   url text not null
 );
 
+create table users (
+  id varchar(20) not null,
+  locale varchar(5)
+);
+
 insert into themes (name, url) values ('beats to relax/study to (24h)', 'https://www.youtube.com/watch?v=5qap5aO4i9A');
 insert into themes (name, url) values ('beats to sleep/chill to (24h)', 'https://www.youtube.com/watch?v=DWcJFNfaw9c');

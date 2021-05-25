@@ -1,8 +1,10 @@
 import { Message } from 'discord.js'
 import Client from '../classes/Client'
+import Query from '../classes/Query'
+import { Locale } from '../types'
 
-export default function (client: Client, msg: Message) {
-  msg.channel.send(`:ping_pong: 지연시간: **${client.ws.ping}밀리초**`)
+export default function (client: Client, msg: Message, _: Query, locale: Locale) {
+  msg.channel.send(locale('ping_success', client.ws.ping))
 }
 
 export const aliases = ['ping', '핑', 'pong']
