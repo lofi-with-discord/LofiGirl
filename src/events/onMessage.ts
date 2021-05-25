@@ -1,4 +1,4 @@
-import { GuildChannel, Message } from 'discord.js'
+import { EmbedField, GuildChannel, Message } from 'discord.js'
 import { get } from 'superagent'
 import Client from '../classes/Client'
 import { DefaultEmbed, hasPermissions } from '../utils'
@@ -18,12 +18,10 @@ export default async function onMessage (client: Client, msg: Message) {
   if (!client.user) return
 
   const [user] = await client.db.select('*').from('users').where('id', author.id)
-  const locale = (phrase: string, ...args: any[]) =>
+  let locale = (phrase: string, ...args: any[]) =>
     client.locale.__({ locale: user?.locale || 'ko_KR', phrase }, ...args)
 
-  if (!msg.guild) {
-    return author.send(locale('dm_disallow')).catch()
-  }
+  if (!msg.guild) return author.send(locale('dm_disallow')).catch()
 
   const channel = msg.channel as GuildChannel
   if (!channel.permissionsFor(client.user.id)?.has('SEND_MESSAGES')) return
@@ -40,6 +38,54 @@ export default async function onMessage (client: Client, msg: Message) {
   const target = client.commands.find((command) => command.aliases.includes(query.cmd))
 
   if (!target) return
+  if (!user) {
+    const perm = hasPermissions(client.user.id, channel, ['ADD_REACTIONS', 'EMBED_LINKS'])
+    if (perm) {
+      const embed = new DefaultEmbed('oobe', null, {
+        title: 'Select a language',
+        fields: client.locale.getLocales().reduce((prev, curr) =>
+          [...prev, {
+            name:
+              client.locale.__({ phrase: 'flag', locale: curr }) + ' ' +
+              client.locale.__({ phrase: 'locale', locale: curr }),
+            value: client.locale.__({ phrase: 'translaters', locale: curr }),
+            inline: true
+          }], [] as EmbedField[])
+      })
+
+      const m = await msg.channel.send(embed)
+      const flags = client.locale.__l('flag')
+
+      flags.forEach((flag) => m.react(flag))
+      const collected = await m.awaitReactions((r, u) => flags.includes(r.emoji.name) && u.id === author.id, { max: 1 })
+
+      if (!collected.first()) return
+      const choice = Object.keys(client.locale.__h('flag').find((flag) => Object.values(flag)[0] === collected.first()?.emoji.name)!)[0]
+
+      await client.db.insert({ id: author.id, locale: choice }).into('users')
+
+      locale = (phrase: string, ...args: any[]) =>
+        client.locale.__({ locale: choice, phrase }, ...args)
+    } else {
+      const m = await msg.channel.send(
+        '**Select a language**\n\n' +
+        client.locale.__h('flag').reduce((prev, curr) => {
+          const localeId = Object.keys(curr)[0]
+          const flag = curr[localeId]
+
+          return [...prev, `${flag} ${client.locale.__({ phrase: 'locale', locale: localeId })} (\`${client.config.prefix}locale ${localeId}\`)\n- ${client.locale.__({ phrase: 'translaters', locale: localeId })}`]
+        }, [] as string[]).join('\n\n'))
+
+      const collected = await m.channel.awaitMessages((m) => m.author.id === author.id && m.content.startsWith(`${client.config.prefix}locale `) && client.locale.getLocales().includes(m.content.split(' ')[1]), { max: 1 })
+      if (!collected.first()) return
+
+      const [, choice] = collected.first()!.content.split(' ')
+      await client.db.insert({ id: author.id, locale: choice }).into('users')
+
+      locale = (phrase: string, ...args: any[]) =>
+        client.locale.__({ locale: choice, phrase }, ...args)
+    }
+  }
 
   if (client.config.koreanbots?.enable) {
     if (!cache.includes(msg.author.id)) {
