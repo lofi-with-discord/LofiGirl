@@ -91,7 +91,7 @@ export default async function onMessage (client: Client, msg: Message) {
     if (!cache.includes(msg.author.id)) {
       const { status, body } =
         await get(client.config.koreanbots.baseURL + '/vote?userID=' + msg.author.id)
-          .set('token', client.config.koreanbots.token)
+          .set('Authorization', client.config.koreanbots.token)
           .catch(() => { return { status: 400, body: { } } })
 
       if (status !== 200) target.default(client, msg, query, locale)
