@@ -90,13 +90,14 @@ export default async function onMessage (client: Client, msg: Message) {
   if (client.config.koreanbots?.enable) {
     if (!cache.includes(msg.author.id)) {
       const { status, body } =
-        await get(client.config.koreanbots.baseURL + '/bots/voted/' + msg.author.id)
+        await get(client.config.koreanbots.baseURL + '/vote?userID=' + msg.author.id)
           .set('token', client.config.koreanbots.token)
-          .catch(() => { return { status: 400, body: {} } })
+          .catch(() => { return { status: 400, body: { } } })
 
       if (status !== 200) target.default(client, msg, query, locale)
-      else if (body.voted) {
-        cache.push(msg.author.id)
+      else if (body.data.voted) {
+        const index = cache.push(msg.author.id) - 1
+        setTimeout(() => cache.splice(index), 24 * 60 * 60 * 1000)
         target.default(client, msg, query, locale)
       } else {
         if (hasPermissions(client.user.id, channel, ['EMBED_LINKS'])) {
