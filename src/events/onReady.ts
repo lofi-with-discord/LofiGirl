@@ -49,8 +49,8 @@ export default async function (client: Client) {
 
   if (client.config.koreanbots?.enable) {
     setInterval(async () => {
-      await post(client.config.koreanbots.baseURL + '/bots/servers')
-        .set('token', client.config.koreanbots.token)
+      await post(client.config.koreanbots.baseURL + '/stats')
+        .set('Authorization', client.config.koreanbots.token)
         .send({ servers: client.guilds.cache.size })
         .catch(console.log)
     }, 300000)
