@@ -24,7 +24,7 @@ export default class Lavalink extends Manager {
     player.on('warn', (warn) => this.logger.logWarn(warn))
 
     this.logger.logInfo(false, channel.guild)
-    await player.play(await this.getTrack(url)).catch(process.exit)
+    await player.play(await this.getTrack(url))
   }
 
   async stop (guild: Guild) {
@@ -38,7 +38,7 @@ export default class Lavalink extends Manager {
       params.append('identifier', url)
 
       const node = this.nodes.get('main')
-      if (!node) process.exit()
+      if (!node) process.exit(1)
 
       const res =
         await get('http://' + node.host + ':' + node.port + '/loadtracks?' + params)

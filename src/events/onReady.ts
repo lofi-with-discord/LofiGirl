@@ -10,7 +10,7 @@ export default async function (client: Client) {
     client.user?.setActivity(`${client.config.prefix}help | with ${client.channels.cache.filter((c) => c instanceof VoiceChannel && c.members.has(client.user?.id!)).reduce((prev, curr) => prev + (curr as VoiceChannel).members.filter((m) => !m.user.bot).size, 0)} users`)
   }, 5000)
 
-  await client.lavalink.connect().catch(process.exit)
+  await client.lavalink.connect().catch(() => process.exit(1))
   console.log('Lavalink Connected')
 
   const channels = await client.db.select('*').from('channels')
