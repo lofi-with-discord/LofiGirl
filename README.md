@@ -1,3 +1,8 @@
+# :warning: Warning!
+> this repository has been deprecated. please use [this](https://github.com/lofi-with-discord/LofiGirl3-playserver) and [this](https://github.com/lofi-with-discord/LofiGirl3-interactions) instead.
+
+---
+
 <p align="center">
   <img src="https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg" />
   <small>
